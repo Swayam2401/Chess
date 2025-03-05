@@ -5,11 +5,11 @@ export abstract class Parent {
     public points: number;
 
     constructor(
-        readonly unicode: string,
+        readonly name: string,
         public team: boolean,
         public position: number[],
     ) {
-        this.unicode = unicode;
+        this.name = name;
         this.points = Infinity;
         this.team = team;
         this.position[0] = position[0];
@@ -418,4 +418,16 @@ export class Pawn extends Parent {
     }
 
 
+}
+
+export class shadowPawn extends Parent {
+    constructor(
+        name: string,
+        team: boolean,
+        position: number[],
+    ) {
+        super(name, team, position);
+        this.points = 1;
+        this.moves = [];
+    }
 }

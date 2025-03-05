@@ -49,18 +49,18 @@ board += `<button type="button" class="chess-marks similar top-bottom-marks" dis
 function getObj(key: string, r: number, c: number): Parent | null {
 
     switch (key) {
-        case "\u2658": return new Knight(key, true, [r, c]);
-        case "\u265E": return new Knight(key, false, [r, c]);
-        case "\u265C": return new Rook(key, false, [r, c]);
-        case "\u2656": return new Rook(key, true, [r, c]);
-        case "\u2657": return new Bishop(key, true, [r, c]);
-        case "\u265D": return new Bishop(key, false, [r, c]);
-        case "\u265B": return new Queen(key, false, [r, c]);
-        case "\u2655": return new Queen(key, true, [r, c]);
-        case "\u265F": return new Pawn(key, false, [r, c]);
-        case "\u2659": return new Pawn(key, true, [r, c]);
-        case "\u265A": return new King(key, false, [r, c]);
-        case "\u2654": return new King(key, true, [r, c]);
+        case "\u2658": return new Knight("Knight", true, [r, c]);
+        case "\u265E": return new Knight("Knight", false, [r, c]);
+        case "\u265C": return new Rook("Rook", false, [r, c]);
+        case "\u2656": return new Rook("Rook", true, [r, c]);
+        case "\u2657": return new Bishop("Bishop", true, [r, c]);
+        case "\u265D": return new Bishop("Bishop", false, [r, c]);
+        case "\u265B": return new Queen("Queen", false, [r, c]);
+        case "\u2655": return new Queen("Queen", true, [r, c]);
+        case "\u265F": return new Pawn("Pawn", false, [r, c]);
+        case "\u2659": return new Pawn("Pawn", true, [r, c]);
+        case "\u265A": return new King("King", false, [r, c]);
+        case "\u2654": return new King("King", true, [r, c]);
     }
 
     return null;
