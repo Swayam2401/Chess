@@ -22,7 +22,7 @@ export abstract class Parent {
     }
 
     protected isValidMove(r: number, c: number, matrix: (Parent | null)[][]) {
-        return r > -1 && r < 8 && c > -1 && c < 8 && (!matrix[r][c] || matrix[r][c].team != this.team);
+        return r > -1 && r < 8 && c > -1 && c < 8 && (matrix[r][c]?.name == "ShadowPawn" || !matrix[r][c] || matrix[r][c].team != this.team);
     }
 
     public setPosition(r: number, c: number) {
@@ -113,7 +113,7 @@ export class Queen extends Parent {
                 break;
             }
 
-            if (matrix[this.position[0]][i] && matrix[this.position[0]][i]?.team != this.team) {
+            if (matrix[this.position[0]][i] && matrix[this.position[0]][i]?.name != "ShadowPawn" && matrix[this.position[0]][i]?.team != this.team) {
                 break;
             }
         }
@@ -126,7 +126,7 @@ export class Queen extends Parent {
                 break;
             }
 
-            if (matrix[i][this.position[1]] && matrix[i][this.position[1]]?.team != this.team) {
+            if (matrix[i][this.position[1]] && matrix[i][this.position[1]]?.name != "ShadowPawn" && matrix[i][this.position[1]]?.team != this.team) {
                 break;
             }
         }
@@ -139,7 +139,7 @@ export class Queen extends Parent {
                 break;
             }
 
-            if (matrix[this.position[0]][i] && matrix[this.position[0]][i]?.team != this.team) {
+            if (matrix[this.position[0]][i] && matrix[this.position[0]][i]?.name != "ShadowPawn" && matrix[this.position[0]][i]?.team != this.team) {
                 break;
             }
         }
@@ -153,7 +153,7 @@ export class Queen extends Parent {
             }
 
 
-            if (matrix[i][this.position[1]] && matrix[i][this.position[1]]?.team != this.team) {
+            if (matrix[i][this.position[1]] && matrix[i][this.position[1]]?.name != "ShadowPawn" && matrix[i][this.position[1]]?.team != this.team) {
                 break;
             }
         }
@@ -167,7 +167,7 @@ export class Queen extends Parent {
             }
 
 
-            if (matrix[i][j] && matrix[i][j]?.team != this.team) {
+            if (matrix[i][j] && matrix[i][j]?.name != "ShadowPawn" && matrix[i][j]?.team != this.team) {
                 break;
             }
         }
@@ -180,7 +180,7 @@ export class Queen extends Parent {
                 break;
             }
 
-            if (matrix[i][j] && matrix[i][j]?.team != this.team) {
+            if (matrix[i][j] && matrix[i][j]?.name != "ShadowPawn" && matrix[i][j]?.team != this.team) {
                 break;
             }
         }
@@ -193,7 +193,7 @@ export class Queen extends Parent {
                 break;
             }
 
-            if (matrix[i][j] && matrix[i][j]?.team != this.team) {
+            if (matrix[i][j] && matrix[i][j]?.name != "ShadowPawn" && matrix[i][j]?.team != this.team) {
                 break;
             }
         }
@@ -206,7 +206,7 @@ export class Queen extends Parent {
                 break;
             }
 
-            if (matrix[i][j] && matrix[i][j]?.team != this.team) {
+            if (matrix[i][j] && matrix[i][j]?.name != "ShadowPawn" && matrix[i][j]?.team != this.team) {
                 break;
             }
         }
@@ -239,7 +239,7 @@ export class Rook extends Parent {
                 break;
             }
 
-            if (matrix[this.position[0]][i] && matrix[this.position[0]][i]?.team != this.team) {
+            if (matrix[this.position[0]][i] && matrix[this.position[0]][i]?.name != "ShadowPawn" && matrix[this.position[0]][i]?.team != this.team) {
                 break;
             }
         }
@@ -252,7 +252,7 @@ export class Rook extends Parent {
                 break;
             }
 
-            if (matrix[i][this.position[1]] && matrix[i][this.position[1]]?.team != this.team) {
+            if (matrix[i][this.position[1]] && matrix[i][this.position[1]]?.name != "ShadowPawn" && matrix[i][this.position[1]]?.team != this.team) {
                 break;
             }
         }
@@ -265,7 +265,7 @@ export class Rook extends Parent {
                 break;
             }
 
-            if (matrix[this.position[0]][i] && matrix[this.position[0]][i]?.team != this.team) {
+            if (matrix[this.position[0]][i] && matrix[this.position[0]][i]?.name != "ShadowPawn" && matrix[this.position[0]][i]?.team != this.team) {
                 break;
             }
         }
@@ -279,7 +279,7 @@ export class Rook extends Parent {
             }
 
 
-            if (matrix[i][this.position[1]] && matrix[i][this.position[1]]?.team != this.team) {
+            if (matrix[i][this.position[1]] && matrix[i][this.position[1]]?.name != "ShadowPawn" && matrix[i][this.position[1]]?.team != this.team) {
                 break;
             }
         }
@@ -314,7 +314,7 @@ export class Bishop extends Parent {
             }
 
 
-            if (matrix[i][j] && matrix[i][j]?.team != this.team) {
+            if (matrix[i][j] && matrix[i][j]?.name != "ShadowPawn" && matrix[i][j]?.team != this.team) {
                 break;
             }
         }
@@ -327,7 +327,7 @@ export class Bishop extends Parent {
                 break;
             }
 
-            if (matrix[i][j] && matrix[i][j]?.team != this.team) {
+            if (matrix[i][j] && matrix[i][j]?.name != "ShadowPawn" && matrix[i][j]?.team != this.team) {
                 break;
             }
         }
@@ -340,7 +340,7 @@ export class Bishop extends Parent {
                 break;
             }
 
-            if (matrix[i][j] && matrix[i][j]?.team != this.team) {
+            if (matrix[i][j] && matrix[i][j]?.name != "ShadowPawn" && matrix[i][j]?.team != this.team) {
                 break;
             }
         }
@@ -353,7 +353,7 @@ export class Bishop extends Parent {
                 break;
             }
 
-            if (matrix[i][j] && matrix[i][j]?.team != this.team) {
+            if (matrix[i][j] && matrix[i][j]?.name != "ShadowPawn" && matrix[i][j]?.team != this.team) {
                 break;
             }
         }
@@ -389,11 +389,11 @@ export class Pawn extends Parent {
                 result.push([this.position[0] - 2, this.position[1]]);
             }
 
-            if (this.position[0] - 1 >= 0 && this.position[1] + 1 < 8 && matrix[this.position[0] - 1][this.position[1] + 1]) {
+            if (this.position[0] - 1 >= 0 && this.position[1] + 1 < 8 && matrix[this.position[0] - 1][this.position[1] + 1] && matrix[this.position[0] - 1][this.position[1] + 1].team != this.team) {
                 result.push([this.position[0] - 1, this.position[1] + 1]);
             }
 
-            if (this.position[0] - 1 >= 0 && this.position[1] - 1 >= 0 && matrix[this.position[0] - 1][this.position[1] - 1]) {
+            if (this.position[0] - 1 >= 0 && this.position[1] - 1 >= 0 && matrix[this.position[0] - 1][this.position[1] - 1] && matrix[this.position[0] - 1][this.position[1] - 1].team != this.team) {
                 result.push([this.position[0] - 1, this.position[1] - 1]);
             }
         } else {
@@ -405,11 +405,11 @@ export class Pawn extends Parent {
                 result.push([this.position[0] + 2, this.position[1]]);
             }
 
-            if (this.position[0] + 1 < 8 && this.position[1] + 1 < 8 && matrix[this.position[0] + 1][this.position[1] + 1]) {
+            if (this.position[0] + 1 < 8 && this.position[1] + 1 < 8 && matrix[this.position[0] + 1][this.position[1] + 1] && matrix[this.position[0] + 1][this.position[1] + 1].team != this.team) {
                 result.push([this.position[0] + 1, this.position[1] + 1]);
             }
 
-            if (this.position[0] + 1 < 8 && this.position[1] - 1 >= 0 && matrix[this.position[0] + 1][this.position[1] - 1]) {
+            if (this.position[0] + 1 < 8 && this.position[1] - 1 >= 0 && matrix[this.position[0] + 1][this.position[1] - 1] && matrix[this.position[0] + 1][this.position[1] - 1].team != this.team) {
                 result.push([this.position[0] + 1, this.position[1] - 1]);
             }
         }

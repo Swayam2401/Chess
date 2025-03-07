@@ -1,9 +1,12 @@
 import { Parent, shadowPawn } from "./backend/piecesBuilder";
 import { board, matrix } from "./frontend/main";
 const pathSet: Set<string> = new Set<string>();
-const enPassantSet: Set<string> = new Set<string>();
+const enPassant: number[] = [-1, -1];
 
 const mainBoard = document.getElementById("mainBoard") as HTMLDivElement;
+const palyer1Box = document.getElementById("player1-box") as HTMLDivElement;
+const palyer2Box = document.getElementById("player2-box") as HTMLDivElement;
+
 mainBoard.innerHTML = board;
 let preId: string = "";
 let player1: number = 0;
@@ -14,9 +17,6 @@ let turn: boolean = true;
 
 mainBoard.addEventListener("click", (event) => {
     const targetedCell = event.target as HTMLButtonElement;
-
-    console.log(player1, player2);
-    console.log(matrix);
 
     if (targetedCell) {
         let id: string | null = targetedCell.getAttribute("id");
@@ -35,6 +35,7 @@ mainBoard.addEventListener("click", (event) => {
             setValues(id, preId);
             preId = "";
             turn = !turn;
+            highLightTurn();
             return;
         }
 
@@ -75,8 +76,12 @@ function setValues(nextId: string, currId: string): void {
 }
 
 function setAndCalculate(currRow: number, currCol: number, nextRow: number, nextCol: number): void {
-    //calculation part
-    if (matrix[nextRow][nextCol] && matrix[nextRow][nextCol].name != "ShadowPawn") {
+
+    if (matrix[currRow][currCol]?.name != "Pawn") {
+        removeEnpassant();
+    }
+
+    if (matrix[nextRow][nextCol]) {
         if (turn) {
             player1 += matrix[nextRow][nextCol].points;
         } else {
@@ -96,19 +101,7 @@ function setAndCalculate(currRow: number, currCol: number, nextRow: number, next
 //en passant rule handling
 function handleEnPassant(currRow: number, currCol: number, nextRow: number, nextCol: number): void {
 
-    if (matrix[nextRow][nextCol]?.name == "ShadowPawn") {
-
-        if (turn) {
-            player1 += matrix[nextRow][nextCol].points;
-        } else {
-            player2 += matrix[nextRow][nextCol].points;
-        }
-
-        let r: number = nextRow == 2 ? 3 : 4;
-        matrix[r][nextCol] = null;
-        const btn = document.getElementById(`${r}-${nextCol}`) as HTMLButtonElement;
-        btn.innerHTML = "";
-    }
+    removeEnpassant();
 
     if (Math.abs(nextRow - currRow) == 2) {
         let tempTeam: boolean | undefined = matrix[currRow][currCol]?.team;
@@ -116,30 +109,19 @@ function handleEnPassant(currRow: number, currCol: number, nextRow: number, next
         if (tempTeam != undefined) {
             let r: number = nextRow == 3 ? 2 : 5;
             matrix[r][nextCol] = new shadowPawn("ShadowPawn", tempTeam, [r, nextCol]);
-            enPassantSet.add(`${r}-${nextCol}`);
+            enPassant[0] = r;
+            enPassant[1] = nextCol;
         }
     }
-
-
-    enPassantSet.forEach((val) => {
-
-        let coordinates: string[] = val.split("-");
-        let r: number = Number(coordinates[0]);
-        let c: number = Number(coordinates[1]);
-
-        if (r == 2 && (c - 1 >= 0 && (matrix[3][c - 1]?.name != "Pawn" || matrix[3][c - 1]?.team == matrix[r][c]?.team)) && (c + 1 < 8 && (matrix[3][c + 1]?.name != "Pawn" || matrix[3][c + 1]?.team == matrix[r][c]?.team))) {
-            console.log("visited1");
-            matrix[r][c] = null;
-            enPassantSet.delete(val);
-        }
-
-        else if (r == 5 && (c - 1 >= 0 && (matrix[4][c - 1]?.name != "Pawn" || matrix[4][c - 1]?.team == matrix[r][c]?.team)) && (c + 1 < 8 && (matrix[4][c + 1]?.name != "Pawn" || matrix[4][c + 1]?.team == matrix[r][c]?.team))) {
-            console.log("visited2");
-            matrix[r][c] = null;
-            enPassantSet.delete(val);
-        }
-    });
 }
+
+function removeEnpassant(): void {
+    if (enPassant[0] != -1) {
+        matrix[enPassant[0]][enPassant[1]] = matrix[enPassant[0]][enPassant[1]]?.name == "ShadowPawn" ? null : matrix[enPassant[0]][enPassant[1]];
+        enPassant[0] = enPassant[1] = -1;
+    }
+}
+
 //This function highlights the current selected piece path
 function highlightPath(r: number, c: number): void {
     let piece = matrix[r][c];
@@ -178,4 +160,15 @@ function removePath() {
         }
     });
     pathSet.clear();
+}
+
+function highLightTurn(): void {
+    if (turn) {
+        palyer2Box.classList.remove("highLightTurn");
+        palyer1Box.classList.add("highLightTurn");
+        return;
+    }
+
+    palyer1Box.classList.remove("highLightTurn");
+    palyer2Box.classList.add("highLightTurn");
 }

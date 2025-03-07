@@ -4,88 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chess</title>
-
-    <style>
-      *{
-        margin: 0;
-        padding: 0;
-      }
-
-      nav{
-        border : 1px solid black;
-        height: 10vh;
-        width: 100%;
-        display: flex;
-        gap: 0;
-      }
-
-      #player1-box{
-        height: 100%;
-        width: 399px;
-      }
-      
-      #player2-box{
-        height: 100%;
-        width: 399px;
-      }
-
-      #step-stack{
-        height: 100%;
-        width: 720px;
-        border : 1px solid black;
-        border-top: 0;
-        border-bottom: 0;
-      }
-
-      #mainBoard{
-        padding: 0;
-        height: 720px;
-        width: 720px;
-        margin: auto;
-        border: 1px solid black;
-        border-top: 0;
-        display: flex;
-        flex-wrap: wrap;
-      }
-
-      .similar{
-        font-weight: bold;
-        height: 10%;
-        width: 10%;
-      }
-
-      .chess-marks{
-        background-color: transparent;
-        border: none;
-      }
-
-      .bg-light{
-        font-size: 2.5rem;
-        background-color: #fccc9c;
-        border: 0.1px solid gray;
-      }
-
-      .bg-dark{
-        font-size: 2.5rem;
-        background-color: #d48c44;
-        border: 0.1px solid gray;
-      }
-
-      .path{
-        color: rgba(0,128,0,0.5);
-      }
-
-      .redMark{
-        color: rgb(128, 0, 0);
-      }
-
-    </style>
+  <link rel="stylesheet" href="src/style.css">
 </head>
 <body>
   <nav>
-    <div id="player1-box"></div>
+    <div id="player1-box" class="highLightTurn"> White </div>
     <div id = "step-stack"></div>
-    <div id="player2-box"></div>
+    <div id="player2-box"> Black </div>
   </nav>
   <div id="mainBoard"></div>
 </body>
