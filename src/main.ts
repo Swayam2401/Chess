@@ -6,11 +6,17 @@ const enPassant: number[] = [-1, -1];
 const mainBoard = document.getElementById("mainBoard") as HTMLDivElement;
 const palyer1Box = document.getElementById("player1-box") as HTMLDivElement;
 const palyer2Box = document.getElementById("player2-box") as HTMLDivElement;
+const palyer1Points = document.getElementById("player1-points") as HTMLSpanElement;
+const palyer2Points = document.getElementById("player2-points") as HTMLSpanElement;
+
 
 mainBoard.innerHTML = board;
 let preId: string = "";
 let player1: number = 0;
 let player2: number = 0;
+
+palyer1Points.innerText = "0";
+palyer2Points.innerText = "0";
 
 //valid turn or not checking using boolean value (true for white and false for black)
 let turn: boolean = true;
@@ -36,6 +42,8 @@ mainBoard.addEventListener("click", (event) => {
             preId = "";
             turn = !turn;
             highLightTurn();
+            palyer1Points.innerText = player1 + "";
+            palyer2Points.innerText = player2 + "";
             return;
         }
 
@@ -77,10 +85,12 @@ function setValues(nextId: string, currId: string): void {
 
 function setAndCalculate(currRow: number, currCol: number, nextRow: number, nextCol: number): void {
 
+    //this will remove previous enPassant before calculation of points
     if (matrix[currRow][currCol]?.name != "Pawn") {
         removeEnpassant();
     }
 
+    //this will include points in team wise
     if (matrix[nextRow][nextCol]) {
         if (turn) {
             player1 += matrix[nextRow][nextCol].points;
@@ -89,10 +99,12 @@ function setAndCalculate(currRow: number, currCol: number, nextRow: number, next
         }
     }
 
+    //this condition will handle pawn rules like enPassant
     if (matrix[currRow][currCol]?.name == "Pawn") {
         handleEnPassant(currRow, currCol, nextRow, nextCol);
     }
 
+    //this will update piece postion in matrix
     matrix[nextRow][nextCol] = matrix[currRow][currCol];
     matrix[nextRow][nextCol]?.setPosition(nextRow, nextCol);
     matrix[currRow][currCol] = null;
@@ -101,8 +113,18 @@ function setAndCalculate(currRow: number, currCol: number, nextRow: number, next
 //en passant rule handling
 function handleEnPassant(currRow: number, currCol: number, nextRow: number, nextCol: number): void {
 
+    // This condition for removing actual Pawn of shadowPawn 
+    if (matrix[nextRow][nextCol]?.name == "ShadowPawn") {
+        let r: number = nextRow == 2 ? 3 : 4;
+        matrix[r][nextCol] = null;
+        const btn = document.getElementById(`${r}-${nextCol}`) as HTMLButtonElement;
+        btn.innerHTML = "";
+    }
+
+    //this will remove postion of previous shadowPawn or enPassant
     removeEnpassant();
 
+    //this condition will create new enPassant
     if (Math.abs(nextRow - currRow) == 2) {
         let tempTeam: boolean | undefined = matrix[currRow][currCol]?.team;
 
@@ -115,6 +137,7 @@ function handleEnPassant(currRow: number, currCol: number, nextRow: number, next
     }
 }
 
+//Handling enPassant
 function removeEnpassant(): void {
     if (enPassant[0] != -1) {
         matrix[enPassant[0]][enPassant[1]] = matrix[enPassant[0]][enPassant[1]]?.name == "ShadowPawn" ? null : matrix[enPassant[0]][enPassant[1]];
@@ -162,6 +185,7 @@ function removePath() {
     pathSet.clear();
 }
 
+// for knowing whoes turn white or black
 function highLightTurn(): void {
     if (turn) {
         palyer2Box.classList.remove("highLightTurn");
