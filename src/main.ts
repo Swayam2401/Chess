@@ -75,12 +75,6 @@ function setValues(nextId: string, currId: string): void {
     const nextPos: string[] = nextId.split("-");
 
     setAndCalculate(Number(currPos[0]), Number(currPos[1]), Number(nextPos[0]), Number(nextPos[1]));
-
-    const nextPostionEle = document.getElementById(nextId) as HTMLButtonElement;
-    const prePostionEle = document.getElementById(currId) as HTMLButtonElement;
-
-    nextPostionEle.innerHTML = prePostionEle.innerHTML;
-    prePostionEle.innerHTML = "";
 }
 
 function setAndCalculate(currRow: number, currCol: number, nextRow: number, nextCol: number): void {
@@ -104,10 +98,8 @@ function setAndCalculate(currRow: number, currCol: number, nextRow: number, next
         handleEnPassant(currRow, currCol, nextRow, nextCol);
     }
 
-    //this will update piece postion in matrix
-    matrix[nextRow][nextCol] = matrix[currRow][currCol];
-    matrix[nextRow][nextCol]?.setPosition(nextRow, nextCol);
-    matrix[currRow][currCol] = null;
+    //this will update backend as well as frontend
+    matrix[currRow][currCol]?.updatePostion(matrix, nextRow, nextCol);
 }
 
 //en passant rule handling

@@ -10,7 +10,7 @@ export abstract class Parent {
         public position: number[],
     ) {
         this.name = name;
-        this.points = Infinity;
+        this.points = -1;
         this.team = team;
         this.position[0] = position[0];
         this.position[1] = position[1];
@@ -22,12 +22,24 @@ export abstract class Parent {
     }
 
     protected isValidMove(r: number, c: number, matrix: (Parent | null)[][]) {
-        return r > -1 && r < 8 && c > -1 && c < 8 && (matrix[r][c]?.name == "ShadowPawn" || !matrix[r][c] || matrix[r][c].team != this.team);
+        return r >= 0 && r < 8 && c >= 0 && c < 8 && (matrix[r][c]?.name == "ShadowPawn" || !matrix[r][c] || matrix[r][c].team != this.team);
     }
 
-    public setPosition(r: number, c: number) {
-        this.position[0] = r;
-        this.position[1] = c;
+    public updatePostion(matrix: (Parent | null)[][], nextRow: number, nextCol: number): void {
+        let currRow: number = this.position[0];
+        let currCol: number = this.position[1];
+
+        matrix[nextRow][nextCol] = matrix[currRow][currCol];
+        matrix[currRow][currCol] = null;
+
+        this.position[0] = nextRow;
+        this.position[1] = nextCol;
+
+        const nextPostionEle = document.getElementById(`${nextRow}-${nextCol}`) as HTMLButtonElement;
+        const prePostionEle = document.getElementById(`${currRow}-${currCol}`) as HTMLButtonElement;
+
+        nextPostionEle.innerHTML = prePostionEle.innerHTML;
+        prePostionEle.innerHTML = "";
     }
 }
 
@@ -383,10 +395,10 @@ export class Pawn extends Parent {
         if (this.team) {
             if (this.position[0] - 1 >= 0 && !matrix[this.position[0] - 1][this.position[1]]) {
                 result.push([this.position[0] - 1, this.position[1]]);
-            }
 
-            if (this.position[0] == 6 && this.position[0] - 2 >= 0 && !matrix[this.position[0] - 2][this.position[1]]) {
-                result.push([this.position[0] - 2, this.position[1]]);
+                if (this.position[0] == 6 && this.position[0] - 2 >= 0 && !matrix[this.position[0] - 2][this.position[1]]) {
+                    result.push([this.position[0] - 2, this.position[1]]);
+                }
             }
 
             if (this.position[0] - 1 >= 0 && this.position[1] + 1 < 8 && matrix[this.position[0] - 1][this.position[1] + 1] && matrix[this.position[0] - 1][this.position[1] + 1].team != this.team) {
@@ -396,13 +408,14 @@ export class Pawn extends Parent {
             if (this.position[0] - 1 >= 0 && this.position[1] - 1 >= 0 && matrix[this.position[0] - 1][this.position[1] - 1] && matrix[this.position[0] - 1][this.position[1] - 1].team != this.team) {
                 result.push([this.position[0] - 1, this.position[1] - 1]);
             }
+
         } else {
             if (this.position[0] + 1 < 8 && !matrix[this.position[0] + 1][this.position[1]]) {
                 result.push([this.position[0] + 1, this.position[1]]);
-            }
 
-            if (this.position[0] == 1 && this.position[0] + 2 < 8 && !matrix[this.position[0] + 2][this.position[1]]) {
-                result.push([this.position[0] + 2, this.position[1]]);
+                if (this.position[0] == 1 && this.position[0] + 2 < 8 && !matrix[this.position[0] + 2][this.position[1]]) {
+                    result.push([this.position[0] + 2, this.position[1]]);
+                }
             }
 
             if (this.position[0] + 1 < 8 && this.position[1] + 1 < 8 && matrix[this.position[0] + 1][this.position[1] + 1] && matrix[this.position[0] + 1][this.position[1] + 1].team != this.team) {
